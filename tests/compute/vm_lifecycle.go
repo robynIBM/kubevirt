@@ -120,7 +120,7 @@ var _ = Describe(SIG("[rfe_id:1177][crit:medium] VirtualMachine", func() {
 	)
 
 	Context("with paused vmi", func() {
-		It("[test_id:4598][test_id:3060]should signal paused/unpaused state with condition", decorators.Conformance, func() {
+		It("[test_id:4598][test_id:3060]should signal paused/unpaused state with condition", decorators.WgS390x, decorators.Conformance, func() {
 			vm := libvmi.NewVirtualMachine(libvmifact.NewAlpine(
 				libvmi.WithInterface(libvmi.InterfaceDeviceWithMasqueradeBinding()),
 				libvmi.WithNetwork(v1.DefaultPodNetwork())),
@@ -138,7 +138,7 @@ var _ = Describe(SIG("[rfe_id:1177][crit:medium] VirtualMachine", func() {
 			Eventually(matcher.ThisVM(vm), 30*time.Second, time.Second).Should(matcher.HaveConditionMissingOrFalse(v1.VirtualMachinePaused))
 		})
 
-		It("[test_id:3085]should be stopped successfully", decorators.Conformance, func() {
+		It("[test_id:3085]should be stopped successfully", decorators.WgS390x, decorators.Conformance, func() {
 			vm := libvmi.NewVirtualMachine(libvmifact.NewAlpine(
 				libvmi.WithInterface(libvmi.InterfaceDeviceWithMasqueradeBinding()),
 				libvmi.WithNetwork(v1.DefaultPodNetwork()),

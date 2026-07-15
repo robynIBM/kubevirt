@@ -169,7 +169,7 @@ var _ = Describe(SIG("VM Live Migration", decorators.RequiresTwoSchedulableNodes
 			}
 		})
 
-		It("should remain to able resolve the VM IP", decorators.Conformance, func() {
+		It("should remain to able resolve the VM IP", decorators.WgS390x, decorators.Conformance, func() {
 			const hostname = "alpine"
 			const port = 1500
 			const labelKey = "subdomain"
@@ -544,7 +544,7 @@ var _ = Describe(SIG("VM Live Migration", decorators.RequiresTwoSchedulableNodes
 				libmigration.ConfirmVMIPostMigration(virtClient, vmi, migration)
 			})
 
-			It("[test_id:1783]should be successfully migrated multiple times with cloud-init disk", decorators.Conformance, func() {
+			It("[test_id:1783]should be successfully migrated multiple times with cloud-init disk", decorators.WgS390x, decorators.Conformance, func() {
 				vmi := libvmifact.NewAlpineWithTestTooling(libnet.WithMasqueradeNetworking())
 
 				By("Starting the VirtualMachineInstance")
@@ -694,7 +694,7 @@ var _ = Describe(SIG("VM Live Migration", decorators.RequiresTwoSchedulableNodes
 				}, 60*time.Second, 1*time.Second).ShouldNot(BeEmpty(), "There should be some compute node")
 			})
 
-			It("should automatically cancel unschedulable migration after a timeout period", decorators.Conformance, func() {
+			It("should automatically cancel unschedulable migration after a timeout period", decorators.WgS390x, decorators.Conformance, func() {
 				// Add node affinity to ensure VMI affinity rules block target pod from being created
 				vmi := libvmifact.NewFedora(
 					libnet.WithMasqueradeNetworking(),
@@ -2638,7 +2638,7 @@ var _ = Describe(SIG("VM Live Migration", decorators.RequiresTwoSchedulableNodes
 	})
 
 	Context("with a live-migration in flight", func() {
-		It("there should always be a single active migration per VMI", decorators.Conformance, func() {
+		It("there should always be a single active migration per VMI", decorators.WgS390x, decorators.Conformance, func() {
 			By("Starting a VMI")
 			vmi := libvmifact.NewAlpine(
 				libvmi.WithInterface(libvmi.InterfaceDeviceWithMasqueradeBinding()),
@@ -2713,7 +2713,7 @@ var _ = Describe(SIG("VM Live Migration", decorators.RequiresTwoSchedulableNodes
 	})
 
 	Context("ResourceQuota rejection", func() {
-		It("Should contain condition when migrating with quota that doesn't have resources for both source and target", decorators.Conformance, func() {
+		It("Should contain condition when migrating with quota that doesn't have resources for both source and target", decorators.WgS390x, decorators.Conformance, func() {
 			vmiRequest := resource.MustParse("200Mi")
 			vmi := libvmifact.NewFedora(
 				libvmi.WithNetwork(v1.DefaultPodNetwork()),

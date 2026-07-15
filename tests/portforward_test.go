@@ -46,7 +46,7 @@ var _ = Describe("[sig-compute]PortForward", decorators.SigCompute, func() {
 		virtClient = kubevirt.Client()
 	})
 
-	It("should successfully open connection to guest", decorators.Conformance, func() {
+	It("should successfully open connection to guest", decorators.WgS390x, decorators.Conformance, func() {
 		vmi := libvmifact.NewFedora(
 			libnet.WithMasqueradeNetworking(),
 		)

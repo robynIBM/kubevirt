@@ -96,20 +96,20 @@ var _ = Describe(SIG("Guest Access Credentials", func() {
 			&expect.BExp{R: "test-ssh-key3"},
 		}, 3*time.Minute)).To(Succeed())
 	},
-		Entry("[test_id:6220] using qemu guest agent", decorators.Conformance, true,
+		Entry("[test_id:6220] using qemu guest agent", decorators.WgS390x, decorators.Conformance, true,
 			withSSHPK(pubKeySecretID, v1.SSHPublicKeyAccessCredentialPropagationMethod{
 				QemuGuestAgent: &v1.QemuGuestAgentSSHPublicKeyAccessCredentialPropagation{
 					Users: []string{"fedora"},
 				},
 			}),
 		),
-		Entry("[test_id:6224] using configdrive", decorators.Conformance, false,
+		Entry("[test_id:6224] using configdrive", decorators.WgS390x, decorators.Conformance, false,
 			libvmi.WithCloudInitConfigDrive(libvmici.WithConfigDriveUserData(userData)),
 			withSSHPK(pubKeySecretID, v1.SSHPublicKeyAccessCredentialPropagationMethod{
 				ConfigDrive: &v1.ConfigDriveSSHPublicKeyAccessCredentialPropagation{},
 			}),
 		),
-		Entry("using nocloud", decorators.Conformance, false,
+		Entry("using nocloud", decorators.WgS390x, decorators.Conformance, false,
 			libvmi.WithCloudInitNoCloud(libvmici.WithNoCloudUserData(userData)),
 			withSSHPK(pubKeySecretID, v1.SSHPublicKeyAccessCredentialPropagationMethod{
 				NoCloud: &v1.NoCloudSSHPublicKeyAccessCredentialPropagation{},

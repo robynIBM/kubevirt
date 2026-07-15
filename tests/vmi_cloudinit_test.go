@@ -80,7 +80,7 @@ var _ = Describe("[rfe_id:151][crit:high][vendor:cnv-qe@redhat.com][level:compon
 
 	Describe("[rfe_id:151][crit:medium][vendor:cnv-qe@redhat.com][level:component]A new VirtualMachineInstance", func() {
 		Context("with cloudInitNoCloud", func() {
-			It("[test_id:1618]should take user-data from k8s secret", decorators.Conformance, func() {
+			It("[test_id:1618]should take user-data from k8s secret", decorators.WgS390x, decorators.Conformance, func() {
 				userData := fmt.Sprintf("#!/bin/sh\n\ntouch /%s\n", expectedUserDataFile)
 				secretID := fmt.Sprintf("%s-test-secret", uuid.NewString())
 
@@ -153,7 +153,7 @@ var _ = Describe("[rfe_id:151][crit:high][vendor:cnv-qe@redhat.com][level:compon
 		})
 
 		Context("with cloudInitConfigDrive", func() {
-			It("[test_id:3178]should have cloud-init data from userDataBase64 source", decorators.Conformance, func() {
+			It("[test_id:3178]should have cloud-init data from userDataBase64 source", decorators.WgS390x, decorators.Conformance, func() {
 				userData := fmt.Sprintf("#!/bin/sh\n\ntouch /%s\n", expectedUserDataFile)
 				vmi := libvmifact.NewFedora(libvmi.WithCloudInitConfigDrive(libcloudinit.WithConfigDriveUserData(userData)))
 

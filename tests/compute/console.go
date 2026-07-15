@@ -71,7 +71,7 @@ var _ = Describe(SIG("[rfe_id:127][posneg:negative][crit:medium][vendor:cnv-qe@r
 				}
 			})
 
-			It("[test_id:1591]should close console connection when new console connection is opened", decorators.Conformance, func() {
+			It("[test_id:1591]should close console connection when new console connection is opened", decorators.WgS390x, decorators.Conformance, func() {
 				vmi := libvmops.RunVMIAndExpectLaunch(libvmifact.NewAlpine(), libvmops.StartupTimeoutSecondsSmall)
 				expectConsoleOutput(vmi, "login")
 
@@ -126,7 +126,7 @@ var _ = Describe(SIG("[rfe_id:127][posneg:negative][crit:medium][vendor:cnv-qe@r
 		})
 
 		Context("without a serial console", func() {
-			It("[test_id:4118]should run but not be connectable via the serial console", decorators.Conformance, func() {
+			It("[test_id:4118]should run but not be connectable via the serial console", decorators.WgS390x, decorators.Conformance, func() {
 				vmi := libvmifact.NewAlpine(libvmi.WithoutSerialConsole())
 				vmi = libvmops.RunVMIAndExpectLaunch(vmi, libvmops.StartupTimeoutSecondsSmall)
 

@@ -83,7 +83,7 @@ var _ = Describe(SIG("Live Migration", decorators.RequiresTwoSchedulableNodes, f
 	Context("with a live-migrate eviction strategy set", func() {
 		Context("[ref_id:2293] with a VMI running with an eviction strategy set", func() {
 
-			It("[test_id:3242]should block the eviction api and migrate", decorators.Conformance, func() {
+			It("[test_id:3242]should block the eviction api and migrate", decorators.WgS390x, decorators.Conformance, func() {
 				vmi := libvmops.RunVMIAndExpectLaunch(alpineVMIWithEvictionStrategy(), libvmops.StartupTimeoutSecondsXLarge)
 
 				originalNode := vmi.Status.NodeName

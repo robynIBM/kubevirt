@@ -160,7 +160,7 @@ var _ = Describe("[sig-compute]SecurityFeatures", decorators.SigCompute, func() 
 	Context("Check virt-launcher capabilities", func() {
 		var container k8sv1.Container
 
-		It("[test_id:4300]has precisely the documented extra capabilities relative to a regular user pod", decorators.Conformance, func() {
+		It("[test_id:4300]has precisely the documented extra capabilities relative to a regular user pod", decorators.WgS390x, decorators.Conformance, func() {
 			vmi := libvmifact.NewAlpine()
 
 			By("Starting a New VMI")

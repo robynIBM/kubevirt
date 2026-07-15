@@ -855,7 +855,7 @@ var _ = Describe("[rfe_id:273][crit:high][vendor:cnv-qe@redhat.com][level:compon
 				node = nodes.Items[0].DeepCopy()
 			})
 
-			It("[test_id:1637]the vmi with node affinity and no conflicts should be scheduled", decorators.Conformance, func() {
+			It("[test_id:1637]the vmi with node affinity and no conflicts should be scheduled", decorators.WgS390x, decorators.Conformance, func() {
 				vmi := libvmifact.NewAlpine(libvmi.WithNodeAffinityFor(node.Name))
 
 				vmi, err := kubevirt.Client().VirtualMachineInstance(testsuite.GetTestNamespace(vmi)).Create(context.Background(), vmi, metav1.CreateOptions{})
@@ -867,7 +867,7 @@ var _ = Describe("[rfe_id:273][crit:high][vendor:cnv-qe@redhat.com][level:compon
 
 			})
 
-			It("[test_id:1638]the vmi with node affinity and anti-pod affinity should not be scheduled", decorators.Conformance, func() {
+			It("[test_id:1638]the vmi with node affinity and anti-pod affinity should not be scheduled", decorators.WgS390x, decorators.Conformance, func() {
 				vmi := libvmifact.NewAlpine(libvmi.WithNodeAffinityFor(node.Name))
 				vmi, err := kubevirt.Client().VirtualMachineInstance(testsuite.GetTestNamespace(vmi)).Create(context.Background(), vmi, metav1.CreateOptions{})
 				Expect(err).To(Not(HaveOccurred()))
@@ -1376,7 +1376,7 @@ var _ = Describe("[rfe_id:273][crit:high][vendor:cnv-qe@redhat.com][level:compon
 			waitVMIFSFreezeStatus(vmi.Namespace, vmi.Name, "")
 		})
 
-		It("[test_id:7480] should succeed multiple times", decorators.Conformance, func() {
+		It("[test_id:7480] should succeed multiple times", decorators.WgS390x, decorators.Conformance, func() {
 			vmi := libvmifact.NewFedora(libnet.WithMasqueradeNetworking())
 			vmi, err := kubevirt.Client().VirtualMachineInstance(testsuite.GetTestNamespace(vmi)).Create(context.Background(), vmi, metav1.CreateOptions{})
 			Expect(err).ToNot(HaveOccurred())
@@ -1403,7 +1403,7 @@ var _ = Describe("[rfe_id:273][crit:high][vendor:cnv-qe@redhat.com][level:compon
 			}
 		})
 
-		It("Freeze without Unfreeze should trigger unfreeze after timeout", decorators.Conformance, func() {
+		It("Freeze without Unfreeze should trigger unfreeze after timeout", decorators.WgS390x, decorators.Conformance, func() {
 			vmi := libvmifact.NewFedora(libnet.WithMasqueradeNetworking())
 			vmi, err := kubevirt.Client().VirtualMachineInstance(testsuite.GetTestNamespace(vmi)).Create(context.Background(), vmi, metav1.CreateOptions{})
 			Expect(err).ToNot(HaveOccurred())
@@ -1425,7 +1425,7 @@ var _ = Describe("[rfe_id:273][crit:high][vendor:cnv-qe@redhat.com][level:compon
 	Describe("Softreboot a VirtualMachineInstance", decorators.ACPI, func() {
 		const vmiLaunchTimeout = 360
 
-		It("soft reboot vmi with agent connected should succeed", decorators.Conformance, func() {
+		It("soft reboot vmi with agent connected should succeed", decorators.WgS390x, decorators.Conformance, func() {
 			vmi := libvmops.RunVMIAndExpectLaunch(libvmifact.NewFedora(withoutACPI()), vmiLaunchTimeout)
 
 			Eventually(matcher.ThisVMI(vmi), 12*time.Minute, 2*time.Second).Should(matcher.HaveConditionTrue(v1.VirtualMachineInstanceAgentConnected))
@@ -1448,7 +1448,7 @@ var _ = Describe("[rfe_id:273][crit:high][vendor:cnv-qe@redhat.com][level:compon
 			waitForVMIRebooted(vmi, console.LoginToAlpine)
 		})
 
-		It("soft reboot vmi neither have the agent connected nor the ACPI feature enabled should fail", decorators.Conformance, func() {
+		It("soft reboot vmi neither have the agent connected nor the ACPI feature enabled should fail", decorators.WgS390x, decorators.Conformance, func() {
 			vmi := libvmops.RunVMIAndExpectLaunch(libvmifact.NewAlpine(withoutACPI()), vmiLaunchTimeout)
 
 			Expect(console.LoginToAlpine(vmi)).To(Succeed())
@@ -1483,7 +1483,7 @@ var _ = Describe("[rfe_id:273][crit:high][vendor:cnv-qe@redhat.com][level:compon
 	})
 
 	Describe("Pausing/Unpausing a VirtualMachineInstance", func() {
-		It("[test_id:4597]should signal paused state with condition", decorators.Conformance, func() {
+		It("[test_id:4597]should signal paused state with condition", decorators.WgS390x, decorators.Conformance, func() {
 			vmi := libvmops.RunVMIAndExpectLaunch(libvmifact.NewAlpine(), libvmops.StartupTimeoutSecondsMedium)
 			Eventually(matcher.ThisVMI(vmi), 30*time.Second, time.Second).Should(matcher.HaveConditionMissingOrFalse(v1.VirtualMachineInstancePaused))
 			Eventually(matcher.ThisVMI(vmi), 30*time.Second, time.Second).Should(matcher.HaveConditionTrue(v1.VirtualMachineInstanceReady))
@@ -1574,7 +1574,7 @@ var _ = Describe("[rfe_id:273][crit:high][vendor:cnv-qe@redhat.com][level:compon
 	})
 
 	Describe("[rfe_id:273][crit:high][vendor:cnv-qe@redhat.com][level:component]Delete a VirtualMachineInstance's Pod (API)", decorators.WgS390x, func() {
-		It("[test_id:1650]should result in the VirtualMachineInstance moving to a finalized state", decorators.Conformance, func() {
+		It("[test_id:1650]should result in the VirtualMachineInstance moving to a finalized state", decorators.WgS390x, decorators.Conformance, func() {
 			By("Creating the VirtualMachineInstance")
 			vmi := libvmops.RunVMIAndExpectLaunch(libvmifact.NewAlpine(), startupTimeout)
 
@@ -1638,12 +1638,12 @@ var _ = Describe("[rfe_id:273][crit:high][vendor:cnv-qe@redhat.com][level:compon
 				Eventually(matcher.ThisVMI(vmi)).WithTimeout(time.Duration(gracePeriodSeconds) * time.Second).WithPolling(time.Second).Should(
 					matcher.BeInPhase(v1.Succeeded))
 			},
-				Entry("[test_id:1653]with set grace period seconds", decorators.Conformance, libvmi.WithTerminationGracePeriod(10), int64(10)),
+				Entry("[test_id:1653]with set grace period seconds", decorators.WgS390x, decorators.Conformance, libvmi.WithTerminationGracePeriod(10), int64(10)),
 				Entry("[test_id:1654]with default grace period seconds", decorators.Conformance, withoutTerminationGracePeriodSeconds, v1.DefaultGracePeriodSeconds),
 			)
 		})
 		Context("with grace period greater than 0", func() {
-			It("[test_id:1655]should run graceful shutdown", decorators.Conformance, func() {
+			It("[test_id:1655]should run graceful shutdown", decorators.WgS390x, decorators.Conformance, func() {
 				By("Setting a VirtualMachineInstance termination grace period to 5")
 				// Give the VirtualMachineInstance a custom grace period
 				vmi := libvmifact.NewAlpine(libvmi.WithTerminationGracePeriod(5))

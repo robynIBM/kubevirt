@@ -69,7 +69,7 @@ var _ = Describe("[rfe_id:588][crit:medium][vendor:cnv-qe@redhat.com][level:comp
 
 	Describe("[rfe_id:273][crit:medium][vendor:cnv-qe@redhat.com][level:component]Starting and stopping the same VirtualMachine", func() {
 		Context("with ephemeral registry disk", func() {
-			It("[test_id:1463] should success multiple times", decorators.Conformance, func() {
+			It("[test_id:1463] should success multiple times", decorators.WgS390x, decorators.Conformance, func() {
 				By("Creating the VirtualMachine")
 				vm := libvmi.NewVirtualMachine(libvmifact.NewAlpine())
 				vm, err := virtClient.VirtualMachine(testsuite.GetTestNamespace(vm)).Create(context.TODO(), vm, metav1.CreateOptions{})

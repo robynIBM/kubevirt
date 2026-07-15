@@ -77,7 +77,7 @@ var _ = Describe("[rfe_id:127][crit:medium][vendor:cnv-qe@redhat.com][level:comp
 		})
 
 		Context("with VNC connection", func() {
-			It("[test_id:1611]should allow accessing the VNC device multiple times", decorators.Conformance, func() {
+			It("[test_id:1611]should allow accessing the VNC device multiple times", decorators.WgS390x, decorators.Conformance, func() {
 				for i := 0; i < 10; i++ {
 					ctx, cancel, connected := newCtxWithConnect()
 					DeferCleanup(cancel)
