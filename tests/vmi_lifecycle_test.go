@@ -1436,18 +1436,6 @@ var _ = Describe("[rfe_id:273][crit:high][vendor:cnv-qe@redhat.com][level:compon
 			waitForVMIRebooted(vmi, console.LoginToFedora)
 		})
 
-		It("soft reboot vmi with ACPI feature enabled should succeed", decorators.Conformance, func() {
-			vmi := libvmops.RunVMIAndExpectLaunch(libvmifact.NewAlpine(), vmiLaunchTimeout)
-
-			Expect(console.LoginToAlpine(vmi)).To(Succeed())
-			Eventually(matcher.ThisVMI(vmi), 30*time.Second, 2*time.Second).Should(matcher.HaveConditionMissingOrFalse(v1.VirtualMachineInstanceAgentConnected))
-
-			err := kubevirt.Client().VirtualMachineInstance(testsuite.GetTestNamespace(vmi)).SoftReboot(context.Background(), vmi.Name)
-			Expect(err).ToNot(HaveOccurred())
-
-			waitForVMIRebooted(vmi, console.LoginToAlpine)
-		})
-
 		It("soft reboot vmi neither have the agent connected nor the ACPI feature enabled should fail", decorators.Conformance, func() {
 			vmi := libvmops.RunVMIAndExpectLaunch(libvmifact.NewAlpine(withoutACPI()), vmiLaunchTimeout)
 

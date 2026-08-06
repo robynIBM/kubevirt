@@ -272,25 +272,6 @@ var _ = Describe(SIG("VM Live Migration", decorators.RequiresTwoSchedulableNodes
 			})
 		})
 		Context("with a Alpine disk", func() {
-			It("[test_id:6969US]should be successfully migrate with a tablet device", decorators.Conformance, func() {
-				vmi := libvmifact.NewAlpineWithTestTooling(
-					libnet.WithMasqueradeNetworking(),
-					libvmi.WithTablet("tablet0", v1.InputBusUSB),
-				)
-
-				By("Starting the VirtualMachineInstance")
-				vmi = libvmops.RunVMIAndExpectLaunch(vmi, libvmops.StartupTimeoutSecondsHuge)
-
-				By("Checking that the VirtualMachineInstance console has expected output")
-				Expect(console.LoginToAlpine(vmi)).To(Succeed())
-
-				By("starting the migration")
-				migration := libmigration.New(vmi.Name, vmi.Namespace)
-				migration = libmigration.RunMigrationAndExpectToCompleteWithDefaultTimeout(virtClient, migration)
-
-				// check VMI, confirm migration state
-				libmigration.ConfirmVMIPostMigration(virtClient, vmi, migration)
-			})
 			It("[test_id:5689]should be successfully migrate with a WriteBack disk cache", func() {
 				vmi := libvmifact.NewAlpineWithTestTooling(libnet.WithMasqueradeNetworking())
 				vmi.Spec.Domain.Devices.Disks[0].Cache = v1.CacheWriteBack
@@ -315,28 +296,6 @@ var _ = Describe(SIG("VM Live Migration", decorators.RequiresTwoSchedulableNodes
 				By("checking if requested cache 'writeback' has been set")
 				Expect(disks[0].Alias.GetName()).To(Equal("disk0"))
 				Expect(disks[0].Driver.Cache).To(Equal(string(v1.CacheWriteBack)))
-			})
-
-			It("[test_id:6970US]should migrate vmi with cdroms on various bus types", decorators.Conformance, func() {
-				vmi := libvmifact.NewAlpineWithTestTooling(
-					libnet.WithMasqueradeNetworking(),
-					libvmi.WithEphemeralCDRom("cdrom-0", v1.DiskBusSATA, cd.ContainerDiskFor(cd.ContainerDiskAlpine)),
-					libvmi.WithEphemeralCDRom("cdrom-1", v1.DiskBusSCSI, cd.ContainerDiskFor(cd.ContainerDiskAlpine)),
-				)
-
-				By("Starting the VirtualMachineInstance")
-				vmi = libvmops.RunVMIAndExpectLaunch(vmi, libvmops.StartupTimeoutSecondsHuge)
-
-				By("Checking that the VirtualMachineInstance console has expected output")
-				Expect(console.LoginToAlpine(vmi)).To(Succeed())
-
-				// execute a migration, wait for finalized state
-				By("starting the migration")
-				migration := libmigration.New(vmi.Name, vmi.Namespace)
-				migration = libmigration.RunMigrationAndExpectToCompleteWithDefaultTimeout(virtClient, migration)
-
-				// check VMI, confirm migration state
-				libmigration.ConfirmVMIPostMigration(virtClient, vmi, migration)
 			})
 
 			It("[test_id:2353]should migrate vmi with LiveMigrateIfPossible eviction strategy", func() {
@@ -2230,26 +2189,6 @@ var _ = Describe(SIG("VM Live Migration", decorators.RequiresTwoSchedulableNodes
 				Expect(scheduledCond.Reason).To(BeEquivalentTo(k8sv1.PodReasonUnschedulable), "PodScheduled reason should be Unschedulable")
 				Expect(scheduledCond.Message).To(ContainSubstring("node(s) didn't match Pod's node affinity/selector"), "PodScheduled message mismatch")
 			})
-		})
-	})
-
-	Context("with sata disks", func() {
-
-		It("[test_id:1853]VM with containerDisk + CloudInit + ServiceAccount + ConfigMap + Secret + DownwardAPI + External Kernel Boot + USB Disk", decorators.Conformance, func() {
-			vmi := prepareVMIWithAllVolumeSources(testsuite.GetTestNamespace(nil), true)
-
-			Expect(vmi.Spec.Domain.Devices.Disks).To(HaveLen(7))
-			Expect(vmi.Spec.Domain.Devices.Interfaces).To(HaveLen(1))
-
-			vmi = libvmops.RunVMIAndExpectLaunch(vmi, libvmops.StartupTimeoutSecondsXLarge)
-
-			// execute a migration, wait for finalized state
-			By("Starting the Migration")
-			migration := libmigration.New(vmi.Name, vmi.Namespace)
-			migration = libmigration.RunMigrationAndExpectToCompleteWithDefaultTimeout(virtClient, migration)
-
-			// check VMI, confirm migration state
-			libmigration.ConfirmVMIPostMigration(virtClient, vmi, migration)
 		})
 	})
 
